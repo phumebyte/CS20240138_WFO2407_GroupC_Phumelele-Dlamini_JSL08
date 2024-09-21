@@ -1,37 +1,52 @@
-// This one will be a little tricky. So check out this overview first: https://www.youtube.com/watch?v=sJ-c3BA-Ypo
+// 1. Create a variable to store the singleton instance of the bank branch.
+let bankBranchInstance;
 
-// 1. Create a variable to store the singleton instance of the bank branch. "bankBranchInstance"
-let  bankBranchInstance;
 // 2. Define a class called `BankBranch` for managing branch information.
-// 3. In the `BankBranch` class:
-//    - Create a constructor that takes `branchInfo` as a parameter.
-//    - Inside the constructor, check if the `bankBranchInstance` variable is null (indicating no instance exists).
-//    - If `bankBranchInstance` is null, create a new instance with the provided `branchInfo` and assign it to `bankBranchInstance`.
-//    - Return the `bankBranchInstance` whether it's newly created or existing.
-class  BankBranch {
+class BankBranch {
     constructor(branchInfo) {
-        if(!bankBranchInstance){
-            //checks if no instance of bankBranch
+        // 3. In the constructor, check if the instance is null.
+        if (!bankBranchInstance) {
+            // If no instance exists, create one and assign it to the variable.
             this.branchInfo = branchInfo;
-            bankBranchInstance = this;  //assigns the instance to the variable 
+            bankBranchInstance = this;  // Assign the newly created instance to the variable
         }
+        // Return the singleton instance (either newly created or the existing one)
         return bankBranchInstance;
     }
-    // 4. Add methods to the `BankBranch` class for managing branch-related information. For example, you can add a method like `getBranchInfo` to retrieve branch details.
+
+    // 4. Add methods to manage branch-related information
     getBranchInfo() {
         return this.branchInfo;
     }
 
-    closeBranch(){
-        console.log("This branch has been closed");
+    closeBranch() {
+        console.log("This branch has been closed.");
     }
 
-    updateBranchInfo(newInfo){
+    updateBranchInfo(newInfo) {
         this.branchInfo = newInfo;
-        console.log("Branch info has been updated to", this.branchInfo);
+        console.log("Branch info has been updated to:", this.branchInfo);
     }
-
 }
+
+// 5. Usage section: Create instances of the `BankBranch` class
+const branchA = new BankBranch('Downtown Branch');
+console.log(branchA.getBranchInfo()); // Output: Downtown Branch
+
+const branchB = new BankBranch('Uptown Branch'); // Even though we're trying to create branchB, it will still be the same instance
+console.log(branchB.getBranchInfo()); // Output: Downtown Branch (still the same singleton instance)
+
+// Updating the branch information (it will affect both branchA and branchB because they are the same instance)
+branchA.updateBranchInfo('Updated Downtown Branch');
+console.log(branchA.getBranchInfo()); // Output: Updated Downtown Branch
+console.log(branchB.getBranchInfo()); // Output: Updated Downtown Branch (same instance)
+
+// Verifying that branchA and branchB are the same instance
+console.log(branchA === branchB); // Output: true
+
+// Example of closing a branch (just to add functionality)
+branchA.closeBranch(); // Output: This branch has been closed.
+
 
 // 5. In the usage section:
 //    - Create instances of the `BankBranch` class, such as `branchA` and `branchB`, with different branch information.
